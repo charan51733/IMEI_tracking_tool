@@ -79,23 +79,23 @@ WSGI_APPLICATION = 'device_invt.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'i0v74lqceko32gwf',
-        'USER': 'r5ybwia61hdx9tow',
-        'PASSWORD': 'drx5kkqkr0ov84nz',
-        'HOST': 'u3r5w4ayhxzdrw87.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
-        'PORT': 3306
-    },
- }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'i0v74lqceko32gwf',
+#         'USER': 'r5ybwia61hdx9tow',
+#         'PASSWORD': 'drx5kkqkr0ov84nz',
+#         'HOST': 'u3r5w4ayhxzdrw87.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+#         'PORT': 3306
+#     },
+#  }
 
 
 # Password validation
