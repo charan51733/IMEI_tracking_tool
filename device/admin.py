@@ -79,16 +79,16 @@ admin.site.register(model)
 
 
 # auth.UserAdmin
-# admin.site.unregister(User)
-# @admin.register(User)
-# class UserAdmin(BaseUserAdmin):
-#     search_fields = ()
-#     list_filter = ()
-#     def get_queryset(self, request):
-#         qs = super(UserAdmin, self).get_queryset(request)
-#         if not request.user.is_superuser:
-#             return qs.filter(is_superuser=False)
-#         return qs
+admin.site.unregister(User)
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    search_fields = ()
+    list_filter = ()
+    def get_queryset(self, request):
+        qs = super(UserAdmin, self).get_queryset(request)
+        if not request.user.is_superuser:
+            return qs.filter(is_superuser=False)
+        return qs
 
 
 from django.contrib import admin
@@ -140,7 +140,7 @@ class CustomGroupAdmin(GroupAdmin):
             db_field, request=request, **kwargs)
 
 
-# admin.site.unregister(User)
-# admin.site.unregister(Group)
-# admin.site.register(User, CustomUserAdmin)
-# admin.site.register(Group, CustomGroupAdmin)
+admin.site.unregister(User)
+admin.site.unregister(Group)
+admin.site.register(User, CustomUserAdmin)
+admin.site.register(Group, CustomGroupAdmin)
