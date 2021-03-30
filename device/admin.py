@@ -82,16 +82,16 @@ admin.site.register(model)
 
 
 # auth.UserAdmin
-# admin.site.unregister(User)
-# @admin.register(User)
-# class UserAdmin(BaseUserAdmin):
-#     search_fields = ()
-#     list_filter = ()
-#     def get_queryset(self, request):
-#         qs = super(UserAdmin, self).get_queryset(request)
-#         if not request.user.is_superuser:
-#             return qs.filter(is_superuser=False)
-#         return qs
+admin.site.unregister(User)
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    search_fields = ()
+    list_filter = ()
+    def get_queryset(self, request):
+        qs = super(UserAdmin, self).get_queryset(request)
+        if not request.user.is_superuser:
+            return qs.filter(is_superuser=False)
+        return qs
 
 
 from django.contrib import admin
