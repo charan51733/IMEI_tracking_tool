@@ -1,5 +1,8 @@
 from import_export import resources
 from .models import device, oem, model
+import math
+from django.core.exceptions import ValidationError
+import re
 
 class DeviceResource(resources.ModelResource):
     class Meta:
@@ -20,6 +23,15 @@ class DeviceResource(resources.ModelResource):
         # artist_id, created = Track.objects.get_or_create(artist=Artist(title=artist.title))
         brand_model,_create = model.objects.get_or_create(name=modelName.lower().strip(),oem=brand)
         row['model'] = brand_model.id
+
+        imei = str(row.get('imei'))
+        imei = imei.strip(".0")
+
+        if not re.match(r'^[0-9]+$',str(imei)):
+            raise ValidationError("Imei, Please enter valid Imei!.")
+
+        row['imei'] = imei
+
 
     # def before_export(self, queryset, *args, **kwargs):
     #     """

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from import_export.formats import base_formats
 from import_export.admin import ImportExportModelAdmin
+from django.contrib.admin.widgets import AdminDateWidget
 from django.shortcuts import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -17,6 +18,8 @@ class DeviceAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_filter = ("oem","model","delivery")
     fields = ("imei","oem","model","delivery","wfi_mac","iccid","imsi","mdn","purpose","comment","assignee","assigned_date","return_date")
     search_fields = ["imei","wfi_mac","assignee"]
+
+
     # actions = [export_to_csv]
     # list_display_links = ()
     # list_select_related = ('oem', 'category')

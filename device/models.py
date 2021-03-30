@@ -1,4 +1,7 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+import re
+
 # django.db, django.urls, django.contrib, django.conf, django.http, django.apps, django.bin, django.core,
 # django.dispatch, django.forms, django.middleware, django.utils, django.template, django.templatetags,
 # django.test
@@ -29,17 +32,20 @@ class model(models.Model):
     def __str__(self):
         return self.name.capitalize()
 
+def validate_imei(value):
+    if not re.match(r'^[0-9]+$',value):
+        raise ValidationError("Imei, Please enter valid Imei!.")
 
 class device(models.Model):
-    imei            = models.IntegerField(unique=True, null=False)
+    imei            = models.CharField(max_length=225,unique=True, null=False,validators =[validate_imei])
     wfi_mac         = models.CharField(max_length=225,null=True, blank=True)
     iccid           = models.CharField(max_length=225,null=True, blank=True)
     imsi            = models.CharField(max_length=225,null=True, blank=True)
     mdn             = models.CharField(max_length=225,null=True, blank=True)
     assignee        = models.CharField(max_length=225,null=True, blank=True)
-    assigned_date   = models.DateTimeField(default=datetime.datetime.now(),null=True,blank=True)
+    assigned_date   = models.CharField(max_length=50,default=datetime.datetime.now(),null=True,blank=True)
     purpose         = models.CharField(max_length=225,null=True,blank=True)
-    return_date     = models.DateTimeField(default=datetime.datetime.now(),null=True,blank=True)
+    return_date     = models.CharField(max_length=50,default=datetime.datetime.now(),null=True,blank=True)
     comment         = models.TextField(null=True, blank=True)
     oem             = models.ForeignKey(oem,on_delete=models.SET_NULL,null=True, blank=False)
     model          = models.ForeignKey(model,on_delete=models.SET_NULL,null=True, blank=False)
@@ -47,3 +53,7 @@ class device(models.Model):
 
     def __str__(self):
         return self.oem.__str__().capitalize() + " - " + self.model.__str__().capitalize()
+
+    # def clean(self):
+    #     if not str(self.imei).isdigit():
+    #         raise ValidationError("Imei should be number!")
