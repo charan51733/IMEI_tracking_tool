@@ -1,1 +1,1 @@
-web: gunicorn djtest.wsgi --log-file -
+web: gunicorn device_invt.wsgi --log-file -
