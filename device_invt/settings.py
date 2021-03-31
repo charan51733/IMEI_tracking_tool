@@ -89,10 +89,10 @@ WSGI_APPLICATION = 'device_invt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'i0v74lqceko32gwf',
-        'USER': 'r5ybwia61hdx9tow',
-        'PASSWORD': 'drx5kkqkr0ov84nz',
-        'HOST': 'u3r5w4ayhxzdrw87.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+        'NAME': 'hcsix3562wazfsdm',
+        'USER': 'ni0jiv19zz5ou20i',
+        'PASSWORD': 'aalwqtrria818rcb',
+        'HOST': 'klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'PORT': 3306
     },
  }
