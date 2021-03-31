@@ -89,9 +89,9 @@ WSGI_APPLICATION = 'device_invt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'hcsix3562wazfsdm',
-        'USER': 'ni0jiv19zz5ou20i',
-        'PASSWORD': 'aalwqtrria818rcb',
+        'NAME': 'pofgc6u59kclfyyt',
+        'USER': 'fnv25dm9ky1xiu6r',
+        'PASSWORD': 'gfqw6cu00a5pjxhj',
         'HOST': 'klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
         'PORT': 3306
     },
