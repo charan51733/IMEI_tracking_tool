@@ -43,7 +43,7 @@ class device(models.Model):
     imsi            = models.CharField(max_length=225,null=True, blank=True,verbose_name=('IMSI'))
     mdn             = models.CharField(max_length=225,null=True, blank=True,verbose_name=('MDN'))
     assignee        = models.CharField(max_length=225,null=True, blank=True,verbose_name=('ASSIGNEE'))
-    assigned_date   = models.CharField(max_length=50,default=datetime.datetime.now(),null=True,blank=True,verbose_name=('ASSIGNED DATE'))
+    assigned_date   = models.CharField(max_length=50,default=datetime.datetime.now().date(),null=True,blank=True,verbose_name=('ASSIGNED DATE'))
     purpose         = models.CharField(max_length=225,null=True,blank=True,verbose_name=('PURPOSE'))
     return_date     = models.CharField(max_length=50,null=True,blank=True,verbose_name=('RETURN DATE'))
     comment         = models.TextField(null=True, blank=True,verbose_name=('COMMENT'))
