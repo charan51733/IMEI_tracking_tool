@@ -1,6 +1,7 @@
 from django.contrib import admin
 from import_export.formats import base_formats
 from import_export.admin import ImportExportModelAdmin
+from django.contrib.admin import SimpleListFilter
 from django.contrib.admin.widgets import AdminDateWidget
 from django.shortcuts import HttpResponse
 from django.contrib.auth.models import User
@@ -10,12 +11,54 @@ from .models import device, oem, model
 from .resources import DeviceResource
 # Register your models here.
 
+from django.utils.translation import ugettext_lazy as _
+
+
+class AssigneeListFilter(SimpleListFilter):
+    # Human-readable title which will be displayed in the
+    # right admin sidebar just above the filter options.
+    title = _('ASSIGNEE')
+
+    # Parameter for the filter that will be used in the URL query.
+    parameter_name = 'assignee'
+
+    def lookups(self, request, model_admin):
+        """
+        Returns a list of tuples. The first element in each
+        tuple is the coded value for the option that will
+        appear in the URL query. The second element is the
+        human-readable name for the option that will appear
+        in the right sidebar.
+        """
+        return (
+            ('yes', _('Assignee')),
+            ('no', _('No Assignee')),
+        )
+
+    def queryset(self, request, queryset):
+        """
+        Returns the filtered queryset based on the value
+        provided in the query string and retrievable via
+        `self.value()`.
+        """
+        # Compare the requested value (either '80s' or '90s')
+        # to decide how to filter the queryset.
+        # print(queryset.query)
+        if self.value() == 'yes':
+            return queryset.filter(assignee__isnull=False)
+        if self.value() == 'no':
+            return queryset.filter(assignee__isnull=True)
+
+        # print(queryset.query)
+        # print(queryset.query)
+        # return queryset
+
 
 class DeviceAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ("oem","model","imei","delivery","wfi_mac","iccid","mdn","purpose","comment","assignee","assigned_date","return_date")
     list_per_page = 7
     resource_class = DeviceResource
-    list_filter = ("oem","model","delivery","assignee")
+    list_filter = ("oem","model","delivery",AssigneeListFilter)
     # fields = ("imei","oem","model","delivery","wfi_mac","imsi","mdn","purpose","comment","assignee","assigned_date","return_date")
     search_fields = ["imei","wfi_mac","assignee"]
 
