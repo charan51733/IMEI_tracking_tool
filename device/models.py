@@ -30,7 +30,7 @@ class model(models.Model):
         unique_together = ('oem', 'name',)
 
     def __str__(self):
-        return self.name.capitalize()
+        return self.name.upper()
 
 def validate_imei(value):
     if not re.match(r'^[0-9]+$',value):
