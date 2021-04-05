@@ -12,11 +12,11 @@ from .resources import DeviceResource
 
 
 class DeviceAdmin(ImportExportModelAdmin,admin.ModelAdmin):
-    list_display = ("imei","oem","model","delivery","wfi_mac","iccid","imsi","mdn","purpose","comment","assignee","assigned_date","return_date")
+    list_display = ("oem","model","imei","delivery","wfi_mac","iccid","mdn","purpose","comment","assignee","assigned_date","return_date")
     list_per_page = 7
     resource_class = DeviceResource
-    list_filter = ("oem","model","delivery")
-    fields = ("imei","oem","model","delivery","wfi_mac","iccid","imsi","mdn","purpose","comment","assignee","assigned_date","return_date")
+    list_filter = ("oem","model","delivery","assignee")
+    # fields = ("imei","oem","model","delivery","wfi_mac","imsi","mdn","purpose","comment","assignee","assigned_date","return_date")
     search_fields = ["imei","wfi_mac","assignee"]
 
 

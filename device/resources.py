@@ -7,7 +7,7 @@ import re
 class DeviceResource(resources.ModelResource):
     class Meta:
         model = device
-        fields = ("imei","wfi_mac","iccid","imsi","mdn","assignee","purpose","comment","oem","model","delivery")
+        fields = ("imei","wfi_mac","iccid","mdn","assignee",'assigned_date',"purpose","comment","oem","model","delivery",'return_date')
         import_id_fields =  ('imei',)
         exclude = ('id',)
 
