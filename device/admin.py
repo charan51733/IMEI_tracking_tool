@@ -31,8 +31,8 @@ class AssigneeListFilter(SimpleListFilter):
         in the right sidebar.
         """
         return (
-            ('yes', _('Assignee')),
-            ('no', _('No Assignee')),
+            ('yes', _('Assigned Devices')),
+            ('no', _('Available Devices')),
         )
 
     def queryset(self, request, queryset):
