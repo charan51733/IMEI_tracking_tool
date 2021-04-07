@@ -36,20 +36,20 @@ class DeviceResource(resources.ModelResource):
         assign_date = str(row.get('assigned_date'))
         assign_date = assign_date.strip()
         if len(assign_date) != 0:
-            date_format = '%Y-%m-%d'
+            date_format = '%m-%d-%Y'
             try:
                 row['assigned_date']  = datetime.datetime.strptime(assign_date, date_format)
             except ValueError:
-                raise ValidationError("Incorrect data format, should be YYYY-MM-DD")
+                raise ValidationError("Incorrect data format, should be MM-DD-YYYY")
 
         return_date = str(row.get('return_date'))
         return_date = return_date.strip()
         if len(return_date) != 0:
-            date_format = '%Y-%m-%d'
+            date_format = '%m-%d-%Y'
             try:
                 row['return_date']  = datetime.datetime.strptime(return_date, date_format)
             except ValueError:
-                raise ValidationError("Incorrect data format, should be YYYY-MM-DD")
+                raise ValidationError("Incorrect data format, should be MM-DD-YYYY")
 
     # def before_export(self, queryset, *args, **kwargs):
     #     """
