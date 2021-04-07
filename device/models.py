@@ -35,11 +35,11 @@ def dateValidate(value):
     date_string = value
     date_string = date_string.strip()
     if len(date_string) != 0:
-        date_format = '%m-%d-%Y'
+        date_format = '%m/%d/%Y'
         try:
             date_obj = datetime.datetime.strptime(date_string, date_format)
         except ValueError:
-            raise ValidationError("Incorrect data format, should be MM-DD-YYYY")
+            raise ValidationError("Incorrect data format, should be MM/DD/YYYY")
 
 def validate_imei(value):
     if not re.match(r'^[0-9]+$',value):
