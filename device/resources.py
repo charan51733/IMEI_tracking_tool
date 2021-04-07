@@ -3,6 +3,7 @@ from .models import device, oem, model
 import math
 from django.core.exceptions import ValidationError
 import re
+import datetime
 
 class DeviceResource(resources.ModelResource):
     class Meta:
@@ -32,6 +33,23 @@ class DeviceResource(resources.ModelResource):
 
         row['imei'] = imei
 
+        assign_date = str(row.get('assigned_date'))
+        assign_date = assign_date.strip()
+        if len(assign_date) != 0:
+            date_format = '%Y-%m-%d'
+            try:
+                row['assigned_date']  = datetime.datetime.strptime(assign_date, date_format)
+            except ValueError:
+                raise ValidationError("Incorrect data format, should be YYYY-MM-DD")
+
+        return_date = str(row.get('return_date'))
+        return_date = return_date.strip()
+        if len(return_date) != 0:
+            date_format = '%Y-%m-%d'
+            try:
+                row['return_date']  = datetime.datetime.strptime(return_date, date_format)
+            except ValueError:
+                raise ValidationError("Incorrect data format, should be YYYY-MM-DD")
 
     # def before_export(self, queryset, *args, **kwargs):
     #     """
