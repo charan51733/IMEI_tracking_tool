@@ -16,6 +16,19 @@
     <script type="text/javascript" charset="utf-8">
         (function($) {
             $(document).ready(function() {
+
+                jQuery('#id_assigned_date').datepicker({
+                  dateFormat: 'mm/dd/yy',
+                  constrainInput: 'true',
+                  maxDate: ' 1m',
+                  minDate: '0d' })
+
+                jQuery('#id_return_date').datepicker({
+                  dateFormat: 'mm/dd/yy',
+                  constrainInput: 'true',
+                  maxDate: ' 1m',
+                  minDate: '0d' })
+
                 grappelli.initDateAndTimePicker();
                 $("#grp-content-container .grp-group").grp_collapsible_group();
                 $("#grp-content-container .grp-collapse").grp_collapsible({

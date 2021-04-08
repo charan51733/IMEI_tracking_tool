@@ -42,7 +42,7 @@ def dateValidate(value):
             raise ValidationError("Incorrect data format, should be MM/DD/YYYY")
 
 def validate_imei(value):
-    if not re.match(r'^[0-9]+$',value):
+    if not re.match(r'^[0-9]{15}$',value):
         raise ValidationError("Imei, Please enter valid Imei!.")
 
 class device(models.Model):
@@ -52,7 +52,7 @@ class device(models.Model):
     imsi            = models.CharField(max_length=225,null=True, blank=True,verbose_name=('IMSI'))
     mdn             = models.CharField(max_length=225,null=True, blank=True,verbose_name=('MDN'))
     assignee        = models.CharField(max_length=225,null=True, blank=True,verbose_name=('ASSIGNEE'))
-    assigned_date   = models.CharField(max_length=50,default=datetime.datetime.now().date(),null=True,blank=True,verbose_name=('ASSIGNED DATE'),validators=[dateValidate])
+    assigned_date   = models.CharField(max_length=50,default=datetime.datetime.now().strftime('%m/%d/%Y'),null=True,blank=True,verbose_name=('ASSIGNED DATE'),validators=[dateValidate])
     purpose         = models.CharField(max_length=225,null=True,blank=True,verbose_name=('PURPOSE'))
     return_date     = models.CharField(max_length=50,null=True,blank=True,verbose_name=('RETURN DATE'),validators=[dateValidate])
     comment         = models.TextField(null=True, blank=True,verbose_name=('COMMENT'))

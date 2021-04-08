@@ -2,14 +2,16 @@ from django.contrib import admin
 from import_export.formats import base_formats
 from import_export.admin import ImportExportModelAdmin
 from django.contrib.admin import SimpleListFilter
+
 from django.contrib.admin.widgets import AdminDateWidget
 from django.shortcuts import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 # from .models import device, oem, model
 from .models import device, oem, model
-from .resources import DeviceResource
+from .resources import DeviceResource, DeviceExportResource
 # Register your models here.
+from django.db import models
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -61,7 +63,15 @@ class DeviceAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_filter = ("oem","model","delivery",AssigneeListFilter)
     # fields = ("imei","oem","model","delivery","wfi_mac","imsi","mdn","purpose","comment","assignee","assigned_date","return_date")
     search_fields = ["imei","wfi_mac","assignee"]
+    # formfield_overrides = {
+    #     models.TextField: {'widget': RichTextEditorWidget},
+    # }
 
+    def get_export_resource_class(self):
+        """
+        Returns ResourceClass to use for export.
+        """
+        return DeviceExportResource
 
     # actions = [export_to_csv]
     # list_display_links = ()
