@@ -36,6 +36,7 @@ class DeviceResource(resources.ModelResource):
         if not re.match(r'^[0-9]{15}$',str(imei)):
             raise ValidationError("Imei, Please enter valid Imei!.")
 
+        imei = imei.split('.')[0]
         row['imei'] = imei
 
         assign_date = str(row.get('assigned_date'))
