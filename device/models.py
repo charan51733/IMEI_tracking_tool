@@ -1,19 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
-import re
-
-# django.db, django.urls, django.contrib, django.conf, django.http, django.apps, django.bin, django.core,
-# django.dispatch, django.forms, django.middleware, django.utils, django.template, django.templatetags,
-# django.test
-# from django.contrib.auth.models import User
-import datetime
+import re,datetime
 
 delivary_type = [("Early Dev Samples","Early Dev Samples"),("Pre-LE","Pre-LE"),("LE","LE"),("FAI","FAI"),("FFW","FFW"),("VIP KIT","VIP KIT")]
-
-
-# Create your models here.
-
-
 
 class oem(models.Model):
     name = models.CharField(max_length=100,blank=False,unique=True,null=True)
@@ -51,7 +40,7 @@ class device(models.Model):
     iccid           = models.CharField(max_length=225,null=True, blank=True,verbose_name=('ICCID'))
     imsi            = models.CharField(max_length=225,null=True, blank=True,verbose_name=('IMSI'))
     mdn             = models.CharField(max_length=225,null=True, blank=True,verbose_name=('MDN'))
-    assignee        = models.CharField(max_length=225,null=True, blank=True,verbose_name=('ASSIGNEE'))
+    assignee        = models.CharField(max_length=225,null=True, blank=True,verbose_name=('ASSIGNEE'),default=None)
     assigned_date   = models.CharField(max_length=50,default=datetime.datetime.now().strftime('%m/%d/%Y'),null=True,blank=True,verbose_name=('ASSIGNED DATE'),validators=[dateValidate])
     purpose         = models.CharField(max_length=225,null=True,blank=True,verbose_name=('PURPOSE'))
     return_date     = models.CharField(max_length=50,null=True,blank=True,verbose_name=('RETURN DATE'),validators=[dateValidate])
@@ -62,7 +51,3 @@ class device(models.Model):
 
     def __str__(self):
         return self.oem.__str__().capitalize() + " - " + self.model.__str__().capitalize()
-
-    # def clean(self):
-    #     if not str(self.imei).isdigit():
-    #         raise ValidationError("Imei should be number!")

@@ -2,19 +2,13 @@ from django.contrib import admin
 from import_export.formats import base_formats
 from import_export.admin import ImportExportModelAdmin
 from django.contrib.admin import SimpleListFilter
-
-from django.contrib.admin.widgets import AdminDateWidget
-from django.shortcuts import HttpResponse
-from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-# from .models import device, oem, model
 from .models import device, oem, model
 from .resources import DeviceResource, DeviceExportResource
-# Register your models here.
-from django.db import models
-
+from django.contrib import admin
+from django.contrib.auth.models import Group, User
+from django.contrib.auth.admin import GroupAdmin, UserAdmin
 from django.utils.translation import ugettext_lazy as _
-
 
 class AssigneeListFilter(SimpleListFilter):
     # Human-readable title which will be displayed in the
@@ -43,51 +37,24 @@ class AssigneeListFilter(SimpleListFilter):
         provided in the query string and retrievable via
         `self.value()`.
         """
-        # Compare the requested value (either '80s' or '90s')
-        # to decide how to filter the queryset.
-        # print(queryset.query)
+
         if self.value() == 'yes':
             return queryset.filter(assignee__isnull=False)
         if self.value() == 'no':
             return queryset.filter(assignee__isnull=True)
 
-        # print(queryset.query)
-        # print(queryset.query)
-        # return queryset
-
-
 class DeviceAdmin(ImportExportModelAdmin,admin.ModelAdmin):
     list_display = ("oem","model","imei","delivery","wfi_mac","iccid","mdn","purpose","comment","assignee","assigned_date","return_date")
     list_per_page = 7
     resource_class = DeviceResource
-    list_filter = ("oem","model","delivery",AssigneeListFilter)
-    # fields = ("imei","oem","model","delivery","wfi_mac","imsi","mdn","purpose","comment","assignee","assigned_date","return_date")
+    list_filter = ("oem","model","delivery",AssigneeListFilter,)
     search_fields = ["imei","wfi_mac","assignee"]
-    # formfield_overrides = {
-    #     models.TextField: {'widget': RichTextEditorWidget},
-    # }
 
     def get_export_resource_class(self):
         """
         Returns ResourceClass to use for export.
         """
         return DeviceExportResource
-
-    # actions = [export_to_csv]
-    # list_display_links = ()
-    # list_select_related = ('oem', 'category')
-    # list_select_related = False
-    # list_per_page = 100
-    # list_max_show_all = 200
-    # list_editable = ()
-    # search_fields = ()
-    # date_hierarchy = None
-    # save_as = False
-    # save_as_continue = True
-    # save_on_top = False
-    # paginator = Paginator
-    # preserve_filters = True
-    # inlines = []
 
     def get_export_formats(self):
         formats = (
@@ -111,28 +78,8 @@ admin.site.register(oem)
 class ModelAdmin(admin.ModelAdmin):
     list_display = ("name")
     list_per_page = 7
-    # resource_class = DeviceResource
-    # actions = [export_to_csv]
-    # list_display_links = ()
-    # list_filter = ("imei","oem","model")
-    # list_select_related = ('oem', 'category')
-    # list_select_related = False
-    # list_per_page = 100
-    # list_max_show_all = 200
-    # list_editable = ()
-    # search_fields = ()
-    # date_hierarchy = None
-    # save_as = False
-    # save_as_continue = True
-    # save_on_top = False
-    # paginator = Paginator
-    # preserve_filters = True
-    # inlines = []
-    # fields = ("oem","name")
-    # search_fields = ["imei","wfi_mac","iccid","imsi","mdn"]
 
 admin.site.register(model)
-
 
 # auth.UserAdmin
 admin.site.unregister(User)
@@ -145,12 +92,6 @@ class UserAdmin(BaseUserAdmin):
         if not request.user.is_superuser:
             return qs.filter(is_superuser=False)
         return qs
-
-
-from django.contrib import admin
-from django.contrib.auth.models import Group, User
-from django.contrib.auth.admin import GroupAdmin, UserAdmin
-from django.utils.translation import ugettext_lazy as _
 
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
