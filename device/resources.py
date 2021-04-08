@@ -27,7 +27,7 @@ class DeviceResource(resources.ModelResource):
 
         assignee = str(row.get('assignee'))
         assignee = assignee.strip()
-        if len(assignee) != 0:
+        if len(assignee) == 0:
             row['assignee'] = None
 
         imei = str(row.get('imei'))
