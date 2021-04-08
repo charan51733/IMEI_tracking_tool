@@ -25,6 +25,11 @@ class DeviceResource(resources.ModelResource):
         brand_model,_create = model.objects.get_or_create(name=modelName.lower().strip(),oem=brand)
         row['model'] = brand_model.id
 
+        assignee = str(row.get('assignee'))
+        assignee = assignee.strip()
+        if len(assignee) != 0:
+            row['assignee'] = None
+
         imei = str(row.get('imei'))
         imei = imei.strip(".0")
 
