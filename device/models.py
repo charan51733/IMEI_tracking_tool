@@ -38,7 +38,7 @@ class device(models.Model):
 
     delivary_type = [("Early Dev Samples","Early Dev Samples"),("Pre-LE","Pre-LE"),("LE","LE"),("FAI","FAI"),("FFW","FFW"),("VIP KIT","VIP KIT")]
 
-    imei            = models.IntegerField(unique=True, null=False,validators =[validate_imei],verbose_name=('IMEI'))
+    imei            = models.BigIntegerField(unique=True, null=False,validators =[validate_imei],verbose_name=('IMEI'))
     wfi_mac         = models.CharField(max_length=225,null=True, blank=True,verbose_name=('WFI MAC'))
     iccid           = models.CharField(max_length=225,null=True, blank=True,verbose_name=('ICCID'))
     imsi            = models.CharField(max_length=225,null=True, blank=True,verbose_name=('IMSI'))
