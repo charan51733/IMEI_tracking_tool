@@ -2,17 +2,17 @@ from django.db import models
 from django.core.exceptions import ValidationError
 import re,datetime
 
-delivary_type = [("Early Dev Samples","Early Dev Samples"),("Pre-LE","Pre-LE"),("LE","LE"),("FAI","FAI"),("FFW","FFW"),("VIP KIT","VIP KIT")]
+
 
 class oem(models.Model):
-    name = models.CharField(max_length=100,blank=False,unique=True,null=True)
+    name = models.CharField(max_length=100,blank=False,unique=True,null=False)
 
     def __str__(self):
         return self.name.capitalize()
 
 class model(models.Model):
-    name = models.CharField(max_length=100,blank=False,null=True)
-    oem = models.ForeignKey(oem,on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=100,blank=False,null=False)
+    oem = models.ForeignKey(oem,on_delete=models.CASCADE, null=False,blank=False)
 
     class Meta:
         unique_together = ('oem', 'name',)
@@ -31,11 +31,14 @@ def dateValidate(value):
             raise ValidationError("Incorrect data format, should be MM/DD/YYYY")
 
 def validate_imei(value):
-    if not re.match(r'^[0-9]{15}$',value):
+    if not re.match(r'^[0-9]{15}$',str(value)):
         raise ValidationError("Imei, Please enter valid Imei!.")
 
 class device(models.Model):
-    imei            = models.CharField(max_length=15,unique=True, null=False,validators =[validate_imei],verbose_name=('IMEI'))
+
+    delivary_type = [("Early Dev Samples","Early Dev Samples"),("Pre-LE","Pre-LE"),("LE","LE"),("FAI","FAI"),("FFW","FFW"),("VIP KIT","VIP KIT")]
+
+    imei            = models.IntegerField(unique=True, null=False,validators =[validate_imei],verbose_name=('IMEI'))
     wfi_mac         = models.CharField(max_length=225,null=True, blank=True,verbose_name=('WFI MAC'))
     iccid           = models.CharField(max_length=225,null=True, blank=True,verbose_name=('ICCID'))
     imsi            = models.CharField(max_length=225,null=True, blank=True,verbose_name=('IMSI'))
@@ -45,8 +48,8 @@ class device(models.Model):
     purpose         = models.CharField(max_length=225,null=True,blank=True,verbose_name=('PURPOSE'))
     return_date     = models.CharField(max_length=50,null=True,blank=True,verbose_name=('RETURN DATE'),validators=[dateValidate])
     comment         = models.TextField(null=True, blank=True,verbose_name=('COMMENT'))
-    oem             = models.ForeignKey(oem,on_delete=models.SET_NULL,null=True, blank=False,verbose_name=('OEM'))
-    model          = models.ForeignKey(model,on_delete=models.SET_NULL,null=True, blank=False,verbose_name=('MODEL'))
+    oem             = models.ForeignKey(oem,on_delete=models.CASCADE,null=False, blank=False,verbose_name=('OEM'))
+    model          = models.ForeignKey(model,on_delete=models.CASCADE,null=False, blank=False,verbose_name=('MODEL'))
     delivery        = models.CharField(max_length=225, null=False, blank=False,choices=delivary_type,default=delivary_type[0],verbose_name=('DELIVERY'))
 
     def __str__(self):

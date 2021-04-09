@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 import re
 import datetime
 from django.utils.encoding import force_str
+import xlrd
 
 class DeviceResource(resources.ModelResource):
     class Meta:
@@ -12,18 +13,40 @@ class DeviceResource(resources.ModelResource):
         import_id_fields =  ('imei',)
         exclude = ('id',)
 
+
     # def export(self):
 
     def before_import_row(self, row, **kwargs):
         name = str(row.get('oem'))
-        brand,_create = oem.objects.get_or_create(name=name.lower().strip())
-        row['oem'] = brand.id
+        name.strip()
+
+        Error = {}
+        if len(name) != 0:
+            brand,_create = oem.objects.get_or_create(name=name.lower().strip())
+            row['oem'] = brand.id
+        else:
+            Error.update({'OEM': ["Please enter valid Oem!."]})
+            # raise ValidationError("OEM, Please enter valid Oem!.")
 
         modelName = str(row.get('model'))
-        brandModelData = {"name": modelName.lower().strip(), "oem": name.lower().strip()}
-        # artist_id, created = Track.objects.get_or_create(artist=Artist(title=artist.title))
-        brand_model,_create = model.objects.get_or_create(name=modelName.lower().strip(),oem=brand)
-        row['model'] = brand_model.id
+        modelName.strip()
+        if len(modelName) != 0:
+            brandModelData = {"name": modelName.lower().strip(), "oem": name.lower().strip()}
+            # artist_id, created = Track.objects.get_or_create(artist=Artist(title=artist.title))
+            brand_model,_create = model.objects.get_or_create(name=modelName.lower().strip(),oem=brand)
+            row['model'] = brand_model.id
+        else:
+            Error.update({'MODEL': ["Please enter valid Model!."]})
+            # raise ValidationError("MODEL, Please enter valid Model!.")
+
+        dalivery = str(row.get('delivery')).strip()
+
+        if len(dalivery) == 0:
+            Error.update({'DELIVERY': ["Please enter valid Delivery!."]})
+        else:
+            if dalivery not in dict(device.delivary_type).values():
+                daliveryStr = ', '.join([str(x) for x in dict(device.delivary_type).values()])
+                Error.update({'DELIVERY': ["Please enter valid Delivery!,should be any of these {} ".format(daliveryStr)]})
 
         assignee = str(row.get('assignee'))
         assignee = assignee.strip()
@@ -31,33 +54,57 @@ class DeviceResource(resources.ModelResource):
             row['assignee'] = None
 
         imei = str(row.get('imei'))
-        imei = imei.strip(".0")
+        imei = int(float(imei))
 
         if not re.match(r'^[0-9]{15}$',str(imei)):
-            raise ValidationError("Imei, Please enter valid Imei!.")
+            Error.update({'IMEI': ["Please enter valid Imei!."]})
+            # raise ValidationError("IMEI, Please enter valid Imei!.")
 
-        imei = imei.split('.')[0]
-        row['imei'] = imei
+        # imei = str(imei).split('.')[0]
+        # print(imei)
+        # row['imei'] = imei
+        assign_date = ""
+        assign_date = row.get('assigned_date')
 
-        assign_date = str(row.get('assigned_date'))
-        assign_date = assign_date.strip()
-        if len(assign_date) != 0:
-            date_format = '%m/%d/%Y'
-            try:
-                datetime.datetime.strptime(assign_date, date_format)
-                row['assigned_date'] = assign_date
-            except ValueError:
-                raise ValidationError("Incorrect data format, should be MM/DD/YYYY")
 
-        return_date = str(row.get('return_date'))
-        return_date = return_date.strip()
-        if len(return_date) != 0:
-            date_format = '%m/%d/%Y'
-            try:
-                datetime.datetime.strptime(return_date, date_format)
-                row['return_date'] = return_date
-            except ValueError:
-                raise ValidationError("Incorrect data format, should be MM/DD/YYYY")
+        if isinstance(assign_date, float):
+            datetime_date = xlrd.xldate_as_datetime(assign_date, 0)
+            date_object = datetime_date.date()
+            assign_date = date_object.strftime('%m/%d/%Y')
+        if isinstance(assign_date, str):
+            assign_date = assign_date.strip()
+
+            if len(assign_date) != 0:
+                date_format = '%m/%d/%Y'
+                try:
+                    datetime.datetime.strptime(assign_date, date_format)
+                    row['assigned_date'] = assign_date
+                except ValueError:
+                    Error.update({'Assigned Date': ["Incorrect data format, should be MM/DD/YYYY."]})
+                    # raise ValidationError("Incorrect data format, should be MM/DD/YYYY")
+
+        return_date = ''
+        return_date = row.get('return_date')
+
+        if isinstance(return_date, float):
+            datetime_date = xlrd.xldate_as_datetime(return_date, 0)
+            date_object = datetime_date.date()
+            return_date = date_object.strftime('%m/%d/%Y')
+        if isinstance(return_date, str):
+            return_date = return_date.strip()
+
+            if len(return_date) != 0:
+
+                date_format = '%m/%d/%Y'
+                try:
+                    datetime.datetime.strptime(return_date, date_format)
+                    row['return_date'] = return_date
+                except ValueError:
+                    Error.update({'Return Date': ["Incorrect data format, should be MM/DD/YYYY."]})
+                    # raise ValidationError("Incorrect data format, should be MM/DD/YYYY")
+
+        if Error:
+            raise ValidationError(Error)
 
 
 class DeviceExportResource(resources.ModelResource):
