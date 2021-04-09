@@ -63,7 +63,7 @@ class DeviceResource(resources.ModelResource):
         # imei = str(imei).split('.')[0]
         # print(imei)
         # row['imei'] = imei
-        assign_date = ""
+
         assign_date = row.get('assigned_date')
 
 
@@ -71,7 +71,7 @@ class DeviceResource(resources.ModelResource):
             datetime_date = xlrd.xldate_as_datetime(assign_date, 0)
             date_object = datetime_date.date()
             assign_date = date_object.strftime('%m/%d/%Y')
-        if isinstance(assign_date, str):
+        elif isinstance(assign_date, str):
             assign_date = assign_date.strip()
 
             if len(assign_date) != 0:
@@ -82,7 +82,8 @@ class DeviceResource(resources.ModelResource):
                 except ValueError:
                     Error.update({'Assigned Date': ["Incorrect data format, should be MM/DD/YYYY."]})
                     # raise ValidationError("Incorrect data format, should be MM/DD/YYYY")
-
+        else:
+            row['assigned_date'] = None
         return_date = ''
         return_date = row.get('return_date')
 
@@ -90,7 +91,7 @@ class DeviceResource(resources.ModelResource):
             datetime_date = xlrd.xldate_as_datetime(return_date, 0)
             date_object = datetime_date.date()
             return_date = date_object.strftime('%m/%d/%Y')
-        if isinstance(return_date, str):
+        elif isinstance(return_date, str):
             return_date = return_date.strip()
 
             if len(return_date) != 0:
@@ -102,6 +103,8 @@ class DeviceResource(resources.ModelResource):
                 except ValueError:
                     Error.update({'Return Date': ["Incorrect data format, should be MM/DD/YYYY."]})
                     # raise ValidationError("Incorrect data format, should be MM/DD/YYYY")
+        else:
+            row['return_date'] = None
 
         if Error:
             raise ValidationError(Error)
