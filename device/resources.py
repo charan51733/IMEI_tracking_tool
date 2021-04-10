@@ -117,6 +117,7 @@ class DeviceExportResource(resources.ModelResource):
     class Meta:
         model = device
         fields = ("imei","wfi_mac","iccid","mdn","assignee",'assigned_date',"purpose","comment","oem__name","model__name","delivery",'return_date')
+        export_order = ("oem__name","model__name","imei","delivery","wfi_mac","iccid","mdn","purpose","comment","assignee",'assigned_date','return_date')
         import_id_fields =  ('imei',)
         exclude = ('id',)
 
