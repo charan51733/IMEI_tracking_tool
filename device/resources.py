@@ -41,6 +41,15 @@ class DeviceResource(resources.ModelResource):
             Error.update({'MODEL': ["Please enter valid Model!."]})
             # raise ValidationError("MODEL, Please enter valid Model!.")
 
+        imei = row.get('imei')
+
+        if isinstance(imei,str) and len(imei.strip()) != 0:
+            imei = int(float(imei))
+            if not re.match(r'^[0-9]{15}$',str(imei)):
+                Error.update({'IMEI': ["Please enter valid Imei!."]})
+        else:
+            Error.update({'IMEI': ["Please enter valid Imei!."]})
+
         dalivery = row.get('delivery')
         # dalivery = str(dalivery or None)
         # print(type(dalivery))
@@ -58,12 +67,6 @@ class DeviceResource(resources.ModelResource):
         if assignee is None:
             row['assignee'] = None
 
-        imei = row.get('imei')
-
-        if isinstance(imei,str) and len(imei.strip()) != 0:
-            imei = int(float(imei))
-            if not re.match(r'^[0-9]{15}$',str(imei)):
-                Error.update({'IMEI': ["Please enter valid Imei!."]})
 
         assign_date = row.get('assigned_date')
         if isinstance(assign_date, float) and assign_date is not None:
