@@ -1,0 +1,42 @@
+version: '2'
+
+networks:
+  app-tier:
+    driver: bridge
+
+services:
+
+  web:
+    build: .
+    command: bash -c "python manage.py collectstatic --noinput && python manage.py makemigrations && python manage.py migrate  && python manage.py runserver 0.0.0.0:8000"
+    container_name: inventory
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      - app-tier
+
+  db:
+    image: mariadb:latest
+    restart: always
+    container_name: mysql
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb_data:/var/lib/mysql:rw
+      - ./data/mysql/init:/docker-entrypoint-initdb.d:ro
+    expose:
+      - 3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=root@123
+      - MYSQL_DATABASE=inventory
+    networks:
+      - app-tier
+
+volumes:
+  mariadb_data:
+    driver: local
+

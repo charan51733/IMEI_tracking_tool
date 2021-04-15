@@ -86,13 +86,25 @@ WSGI_APPLICATION = 'device_invt.wsgi.application'
 #     }
 # }
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'pofgc6u59kclfyyt',
+#        'USER': 'fnv25dm9ky1xiu6r',
+#        'PASSWORD': 'gfqw6cu00a5pjxhj',
+#        'HOST': 'klbcedmmqp7w17ik.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
+#        'PORT': 3306
+#    },
+#}
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'inventory',
         'USER': 'root',
         'PASSWORD': 'root@123',
-        'HOST': '127.0.0.1',
+        'HOST': '172.20.10.14',
         'PORT': 3306
     },
 }
