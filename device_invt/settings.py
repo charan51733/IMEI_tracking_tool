@@ -104,7 +104,7 @@ DATABASES = {
         'NAME': 'inventory',
         'USER': 'root',
         'PASSWORD': 'root@123',
-        'HOST': '172.20.10.14',
+        'HOST': 'db',
         'PORT': 3306
     },
 }

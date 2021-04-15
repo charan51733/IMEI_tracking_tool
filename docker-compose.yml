@@ -20,7 +20,7 @@ services:
       - app-tier
 
   db:
-    image: mariadb:latest
+    image: mariadb:10.5.9
     restart: always
     container_name: mysql
     ports:
