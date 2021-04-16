@@ -10,7 +10,7 @@ import xlrd
 class DeviceResource(resources.ModelResource):
     class Meta:
         model = device
-        fields = ("imei","wfi_mac","iccid","mdn","assignee",'assigned_date',"purpose","comment","oem","model","delivery",'return_date')
+        fields = ("imei","wfi_mac","iccid","mdn","assignee",'assigned_date',"purpose","comment","oem","model","hardware_type",'return_date')
         import_id_fields =  ('imei',)
         exclude = ('id',)
 
@@ -50,15 +50,15 @@ class DeviceResource(resources.ModelResource):
         else:
             Error.update({'IMEI': ["Please enter valid Imei!."]})
 
-        dalivery = row.get('delivery')
+        dalivery = row.get('hardware_type')
         # dalivery = str(dalivery or None)
         # print(type(dalivery))
         if isinstance(dalivery,str) and len(dalivery.strip()) != 0:
-            if dalivery not in dict(device.delivary_type).values():
-                daliveryStr = ', '.join([str(x) for x in dict(device.delivary_type).values()])
-                Error.update({'DELIVERY': ["Please enter valid Delivery!,should be any of these {} ".format(daliveryStr)]})
+            if dalivery not in dict(device.hardware).values():
+                daliveryStr = ', '.join([str(x) for x in dict(device.hardware).values()])
+                Error.update({'HARDWARE TYPE': ["Please enter valid Hardware Type!,should be any of these {} ".format(daliveryStr)]})
         else:
-            Error.update({'DELIVERY': ["Please enter valid Delivery!."]})
+            Error.update({'HARDWARE TYPE': ["Please enter valid Hardware Type!."]})
 
 
         assignee = row.get('assignee')
@@ -116,8 +116,8 @@ class DeviceResource(resources.ModelResource):
 class DeviceExportResource(resources.ModelResource):
     class Meta:
         model = device
-        fields = ("imei","wfi_mac","iccid","mdn","assignee",'assigned_date',"purpose","comment","oem__name","model__name","delivery",'return_date')
-        export_order = ("oem__name","model__name","imei","delivery","wfi_mac","iccid","mdn","purpose","comment","assignee",'assigned_date','return_date')
+        fields = ("imei","wfi_mac","iccid","mdn","assignee",'assigned_date',"purpose","comment","oem__name","model__name","hardware_type",'return_date')
+        export_order = ("oem__name","model__name","imei","hardware_type","wfi_mac","iccid","mdn","purpose","comment","assignee",'assigned_date','return_date')
         import_id_fields =  ('imei',)
         exclude = ('id',)
 

@@ -36,7 +36,7 @@ def validate_imei(value):
 
 class device(models.Model):
 
-    delivary_type = [("Early Dev Samples","Early Dev Samples"),("Pre-LE","Pre-LE"),("LE","LE"),("FAI","FAI"),("FFW","FFW"),("VIP KIT","VIP KIT")]
+    hardware = [("Early Dev Samples","Early Dev Samples"),("Pre-LE","Pre-LE"),("LE","LE"),("FAI","FAI"),("FFW","FFW"),("VIP KIT","VIP KIT")]
 
     imei            = models.BigIntegerField(unique=True, null=False,validators =[validate_imei],verbose_name=('IMEI'))
     wfi_mac         = models.CharField(max_length=225,null=True, blank=True,verbose_name=('WFI MAC'))
@@ -50,7 +50,7 @@ class device(models.Model):
     comment         = models.TextField(null=True, blank=True,verbose_name=('COMMENT'))
     oem             = models.ForeignKey(oem,on_delete=models.CASCADE,null=False, blank=False,verbose_name=('OEM'))
     model          = models.ForeignKey(model,on_delete=models.CASCADE,null=False, blank=False,verbose_name=('MODEL'))
-    delivery        = models.CharField(max_length=225, null=False, blank=False,choices=delivary_type,default=delivary_type[0],verbose_name=('DELIVERY'))
+    hardware_type  = models.CharField(max_length=225, null=False, blank=False,choices=hardware,default=hardware[0],verbose_name=('HARDWARE TYPE'))
 
     def __str__(self):
         return self.oem.__str__().capitalize() + " - " + self.model.__str__().capitalize()
