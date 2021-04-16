@@ -44,10 +44,10 @@ class AssigneeListFilter(SimpleListFilter):
             return queryset.filter(assignee__isnull=True)
 
 class DeviceAdmin(ImportExportModelAdmin,admin.ModelAdmin):
-    list_display = ("oem","model","imei","delivery","wfi_mac","iccid","mdn","purpose","comment","assignee","assigned_date","return_date")
+    list_display = ("oem","model","imei","hardware_type","wfi_mac","iccid","mdn","purpose","comment","assignee","assigned_date","return_date")
     list_per_page = 7
     resource_class = DeviceResource
-    list_filter = ("oem","model","delivery",AssigneeListFilter,)
+    list_filter = ("oem","model","hardware_type",AssigneeListFilter,)
     search_fields = ["imei","wfi_mac","assignee"]
 
     def get_export_resource_class(self):
